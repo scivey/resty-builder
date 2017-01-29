@@ -1,0 +1,15 @@
+tmp
+build
+.tmp
+.env
+*.sublime-workspace
+*.pyc
+__pycache__
+.cache
+.envrc-extra
+tmp_scripts
+dist
+*.egg-info
+*.tar.gz
+*.rock
+tmp_notes
