@@ -93,7 +93,7 @@ function install-to-tmp() {
 
 function configure-build() {
     pushd ${RESTY_BUILDER_BUILD_DIR}/${RESTY_DIR_NAME}
-    ./configure \
+    FLAGS="\
         --prefix=${RESTY_BUILDER_PARAM__PREFIX} \
         --user=${RESTY_BUILDER_PARAM__USER} \
         --group=${RESTY_BUILDER_PARAM__GROUP} \
@@ -101,22 +101,45 @@ function configure-build() {
         --add-module=../${AUTH_PAM_DIR_NAME} \
         --add-module=../${CACHE_PURGE_DIR_NAME} \
         \
+        --with-http_v2_module \
+        --with-http_realip_module \
         --with-http_addition_module \
+        --with-http_geoip_module \
         --with-http_sub_module \
         --with-http_dav_module \
+        --with-http_flv_module \
+        --with-http_mp4_module \
         --with-http_gunzip_module \
         --with-http_gzip_static_module \
         --with-http_auth_request_module \
+        --with-http_random_index_module \
+        --with-http_secure_link_module \
+        --with-http_degradation_module \
+        --with-http_degradation_module \
         --with-http_slice_module \
         --with-http_stub_status_module \
-        --with-http_v2_module \
+        --with-http_ssl_module \
+        \
+        --with-http_iconv_module \
+        --with-http_postgres_module \
+        \
         --with-stream \
         --with-stream_ssl_module \
         \
+        --with-mail \
+        --with-mail_ssl_module \
+        \
         --with-pcre-jit \
         --with-ipv6 \
-        --with-file-aio
+        --with-file-aio"
     popd
+    if [[ "${RESTY_BUILDER_ENABLE_HTTP_IMAGE_FILTER_MODULE}" == "1" ]]; then
+        FLAGS="${FLAGS} --with-http_image_filter_module"
+    fi
+    if [[ "${RESTY_BUILDER_ENABLE_HTTP_DRIZZLE_MODULE}" == "1" ]]; then
+        FLAGS="${FLAGS} --with-http_drizzle_module"
+    fi
+    ./configure ${FLAGS}
 }
 
 
